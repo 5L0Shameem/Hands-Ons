@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Theme Toggle App</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 40px;
+      font-family: Arial, sans-serif;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .light {
+      background-color: #ffffff;
+      color: #222222;
+    }
+
+    .dark {
+      background-color: #121212;
+      color: #ffffff;
+    }
+
+    button {
+      padding: 10px 20px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .light button {
+      background-color: #222;
+      color: #fff;
+    }
+
+    .dark button {
+      background-color: #fff;
+      color: #222;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>My Blog Website</h2>
+  <p>This is a sample blog content. Switch theme to see changes.</p>
+
+  <button id="themeToggle">Toggle Theme</button>
+
+  <script>
+    const body = document.body;
+    const toggleBtn = document.getElementById("themeToggle");
+    const loadTheme = () => {
+      const savedTheme = localStorage.getItem("theme") || "light";
+      body.classList.add(savedTheme);
+      toggleBtn.textContent = savedTheme === "light" 
+        ? "Switch to Dark Mode" 
+        : "Switch to Light Mode";
+    };
+
+    const toggleTheme = () => {
+      if (body.classList.contains("light")) {
+        body.classList.replace("light", "dark");
+        localStorage.setItem("theme", "dark");
+        toggleBtn.textContent = "Switch to Light Mode";
+      } else {
+        body.classList.replace("dark", "light");
+        localStorage.setItem("theme", "light");
+        toggleBtn.textContent = "Switch to Dark Mode";
+      }
+    };
+    toggleBtn.addEventListener("click", toggleTheme);
+
+    loadTheme();
+  </script>
+
+</body>
+</html>
