@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Task Manager Async</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    button { margin: 5px; padding: 5px 10px; }
+    #output { margin-top: 15px; white-space: pre-line; }
+  </style>
+</head>
+<body>
+
+<h2>Task Manager (Async Storage)</h2>
+
+<input type="text" id="taskInput" placeholder="Enter task" />
+<br><br>
+
+<button onclick="runCallback()">Run Callback</button>
+<button onclick="runPromise()">Run Promise</button>
+<button onclick="runAsyncAwait()">Run Async/Await</button>
+
+<div id="output"></div>
+
+<script>
+
+let tasks = [];
+
+const output = document.getElementById("output");
+const taskInput = document.getElementById("taskInput");
+
+
+
+const addTaskCallback = (task, callback) => {
+  setTimeout(() => {
+    tasks.push(task);
+    callback(null, `Task "${task}" added.`);
+  }, 1000);
+};
+
+const deleteTaskCallback = (task, callback) => {
+  setTimeout(() => {
+    const index = tasks.indexOf(task);
+    if (index === -1) {
+      callback("Task not found", null);
+    } else {
+      tasks.splice(index, 1);
+      callback(null, `Task "${task}" deleted.`);
+    }
+  }, 1000);
+};
+
+const listTasksCallback = (callback) => {
+  setTimeout(() => {
+    callback(null, tasks);
+  }, 1000);
+};
+
+const runCallback = () => {
+  const task = taskInput.value;
+  output.innerText = "Running Callback Version...";
+
+  addTaskCallback(task, (err, msg) => {
+    if (err) return output.innerText = err;
+
+    listTasksCallback((err, data) => {
+      if (err) return output.innerText = err;
+
+      output.innerText = `
+${msg}
+
+Tasks:
+${data.map((t,i)=>`${i+1}. ${t}`).join("\n")}
+      `;
+    });
+  });
+};
+
+const addTaskPromise = (task) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      tasks.push(task);
+      resolve(`Task "${task}" added.`);
+    }, 1000);
+  });
+};
+
+const deleteTaskPromise = (task) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const index = tasks.indexOf(task);
+      if (index === -1) {
+        reject("Task not found");
+      } else {
+        tasks.splice(index, 1);
+        resolve(`Task "${task}" deleted.`);
+      }
+    }, 1000);
+  });
+};
+
+const listTasksPromise = () => {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(tasks), 1000);
+  });
+};
+
+const runPromise = () => {
+  const task = taskInput.value;
+  output.innerText = "Running Promise Version...";
+
+  addTaskPromise(task)
+    .then(msg => {
+      return listTasksPromise().then(data => ({ msg, data }));
+    })
+    .then(({ msg, data }) => {
+      output.innerText = `
+${msg}
+
+Tasks:
+${data.map((t,i)=>`${i+1}. ${t}`).join("\n")}
+      `;
+    })
+    .catch(err => output.innerText = err);
+};
+
+const runAsyncAwait = async () => {
+  const task = taskInput.value;
+  output.innerText = "Running Async/Await Version...";
+
+  try {
+    const msg = await addTaskPromise(task);
+    const data = await listTasksPromise();
+
+    output.innerText = `
+${msg}
+
+Tasks:
+${data.map((t,i)=>`${i+1}. ${t}`).join("\n")}
+    `;
+
+  } catch (error) {
+    output.innerText = error;
+  }
+};
+
+</script>
+
+</body>
+</html>
