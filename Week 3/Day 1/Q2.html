@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ Section</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+        .faq-item {
+            margin-bottom: 15px;
+        }
+        .question {
+            background-color: #f1f1f1;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .question.active {
+            background-color: #cce5ff;
+        }
+        .answer {
+            display: none;
+            padding: 10px;
+            margin-top: 5px;
+            border-left: 3px solid #007bff;
+            background-color: #f9f9f9;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+        <div class="question">What is your return policy?</div>
+        <div class="answer">You can return any product within 30 days of purchase for a full refund.</div>
+    </div>
+    <div class="faq-item">
+        <div class="question">How long does shipping take?</div>
+        <div class="answer">Shipping usually takes 5-7 business days within the country.</div>
+    </div>
+    <div class="faq-item">
+        <div class="question">Do you offer international shipping?</div>
+        <div class="answer">Yes, we ship to select countries worldwide. Shipping fees apply.</div>
+    </div>
+    <div class="faq-item">
+        <div class="question">Can I track my order?</div>
+        <div class="answer">Yes, tracking information will be emailed to you once your order is shipped.</div>
+    </div>
+    <div class="faq-item">
+        <div class="question">How do I contact customer support?</div>
+        <div class="answer">You can reach us via email at support@example.com or call 123-456-7890.</div>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            $('.question').click(function(){
+                $(this).toggleClass('active');
+                $(this).next('.answer').slideToggle();
+            });
+        });
+    </script>
+</body>
+</html>
